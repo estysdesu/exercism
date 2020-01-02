@@ -1,0 +1,18 @@
+# Exercism
+**/.exercism/
+
+# Python
+**/__pycache__/
+**/.pytest_cache/
+**/.mypy_cache/
+**/*.pyc/
+
+# Rust
+**/target/
+**/*.rs.bk
+Cargo.lock
+
+# Go
+
+# Typescript
+**/node_modules/
