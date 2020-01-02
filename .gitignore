@@ -1,5 +1,6 @@
 # Exercism
 **/.exercism/
+**/users/
 
 # Python
 **/__pycache__/
