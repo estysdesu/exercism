@@ -12,7 +12,8 @@
 **/target/
 **/*.rs.bk
 Cargo.lock
-./**/.gitignore
+**/.gitignore
+!.gitignore
 
 # Go
 
