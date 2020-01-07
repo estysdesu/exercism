@@ -1,16 +1,19 @@
 use std::fmt;
 
-const MIN_IN_HR: i32 = 60;
-const HRS_IN_DAY: i32 = 24;
+const MIN_PER_HR: i32 = 60;
+const HRS_PER_DAY: i32 = 24;
+
+type Minutes = i32;
+type Hours = i32;
 
 #[derive(Debug, Eq, PartialEq, Copy, Clone)]
 pub struct Clock {
-    hours: i32,
-    minutes: i32,
+    hours: Hours,
+    minutes: Minutes,
 }
 
 impl Clock {
-    pub fn new(h_raw: i32, m_raw: i32) -> Self {
+    pub fn new(h_raw: Hours, m_raw: Minutes) -> Self {
         let (h_adj, m) = Clock::rollover_minutes(m_raw);
         let h = Clock::rollover_hours(h_raw + h_adj);
         Self {
@@ -19,31 +22,31 @@ impl Clock {
         }
     }
 
-    fn rollover_minutes(m_raw: i32) -> (i32, i32) {
-        let mut m = m_raw % MIN_IN_HR; // remainder
-        let mut h = m / MIN_IN_HR; // floor
+    fn rollover_minutes(m_raw: Minutes) -> (Hours, Minutes) {
+        let mut m = m_raw % MIN_PER_HR; // remainder
+        let mut h = m / MIN_PER_HR; // floor
 
         // adjust - minutes to + minutes
         if m < 0 {
-            m += MIN_IN_HR;
+            m += MIN_PER_HR;
             h -= 1;
         }
         (h, m)
     }
 
-    fn rollover_hours(h_raw: i32) -> i32 {
-        let mut h = h_raw % HRS_IN_DAY;
+    fn rollover_hours(h_raw: Hours) -> Hours {
+        let mut h = h_raw % HRS_PER_DAY;
         // CHECK MORE HERE //
         if h_raw < 0 {
-            h = -(h_raw.abs() % HRS_IN_DAY); // cannot use integer division with negative, result is 0
+            h = -(h_raw.abs() % HRS_PER_DAY); // cannot use integer division with negative, result is 0
         }
         if h < 0 {
-            h = HRS_IN_DAY + h;
+            h = HRS_PER_DAY + h;
         }
         h
     }
 
-    pub fn add_minutes(&mut self, m_raw: i32) -> Self {
+    pub fn add_minutes(&mut self, m_raw: Minutes) -> Self {
         let (h_raw, m) = Clock::rollover_minutes(self.minutes + m_raw);
         self.minutes = m;
         self.hours = Clock::rollover_hours(self.hours + h_raw);
