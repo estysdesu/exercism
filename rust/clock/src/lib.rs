@@ -24,13 +24,7 @@ impl Clock {
 
     fn rollover_minutes(m_raw: Minutes) -> (Hours, Minutes) {
         let m = m_raw.rem_euclid(MIN_PER_HR);
-        // negative minutes are adjusted to positive by `(a).rem_eulicd(b)`, hours still need to be adjusted
-        let h = if (m_raw % MIN_PER_HR).is_negative() {
-            m_raw / MIN_PER_HR - 1
-        } else {
-            m_raw / MIN_PER_HR
-        };
-
+        let h = m_raw.div_euclid(MIN_PER_HR);
         (h, m)
     }
 
