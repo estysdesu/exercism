@@ -64,4 +64,10 @@ var testCases = []struct {
 		0,
 		true,
 	},
+	{ // disallow different runes (bytes vs. runes)
+		s1:          "aüa",
+		s2:          "aÃa",
+		want:        1,
+		expectError: false,
+	},
 }

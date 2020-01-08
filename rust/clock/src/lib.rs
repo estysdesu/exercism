@@ -1,10 +1,10 @@
 use std::fmt;
 
-const MIN_PER_HR: i32 = 60;
-const HRS_PER_DAY: i32 = 24;
-
 type Minutes = i32;
 type Hours = i32;
+
+const MIN_PER_HR: Minutes = 60;
+const HRS_PER_DAY: Hours = 24;
 
 #[derive(Debug, Eq, PartialEq, Copy, Clone)]
 pub struct Clock {
@@ -24,7 +24,7 @@ impl Clock {
 
     fn rollover_minutes(m_raw: Minutes) -> (Hours, Minutes) {
         let mut m = m_raw % MIN_PER_HR; // remainder
-        let mut h = m / MIN_PER_HR; // floor
+        let mut h = m_raw / MIN_PER_HR; // floor
 
         // adjust - minutes to + minutes
         if m < 0 {
@@ -36,10 +36,6 @@ impl Clock {
 
     fn rollover_hours(h_raw: Hours) -> Hours {
         let mut h = h_raw % HRS_PER_DAY;
-        // CHECK MORE HERE //
-        if h_raw < 0 {
-            h = -(h_raw.abs() % HRS_PER_DAY); // cannot use integer division with negative, result is 0
-        }
         if h < 0 {
             h = HRS_PER_DAY + h;
         }

@@ -2,23 +2,30 @@ package hamming
 
 import (
 	"fmt"
-	"strings"
 )
 
+// Distance calculates and returns the Hamming distance between two strings
 func Distance(a, b string) (int, error) {
-	var c int
-	var e error
+	// check if strings are same length and return error early if not
+	if len(a) != len(b) {
+		return 0, fmt.Errorf("strings are not equal length.\na: %v\nb: %v", len(a), len(b))
+	}
 
-	if len(a) != len(b) { // check if strings are same length and return error early if not
-		e = fmt.Errorf("strings are not equal length.\na: %v\nb: %v", len(a), len(b))
-	} else if strings.Compare(a, b) == 0 { // return early and don't compute Hamming distance if strings are identical
-		c = 0
-	} else { // iterate over string a and calculate Hamming distance by comparing to string b by index
-		for i, _ := range a {
-			if a[i] != b[i] {
-				c++
-			}
+	// return early and don't compute Hamming distance if strings are identical
+	if a == b {
+		return 0, nil
+	}
+
+	// convert strings to runes and iterate over runes to calculate Hamming distance by comparing runes by index
+	var c int
+	runeA := []rune(a)
+	runeB := []rune(b)
+	for i := range runeA {
+		if runeA[i] != runeB[i] {
+			c++
 		}
 	}
-	return c, e
+
+	return c, nil
+
 }
