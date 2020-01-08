@@ -23,23 +23,19 @@ impl Clock {
     }
 
     fn rollover_minutes(m_raw: Minutes) -> (Hours, Minutes) {
-        let mut m = m_raw % MIN_PER_HR; // remainder
-        let mut h = m_raw / MIN_PER_HR; // floor
+        let m = m_raw.rem_euclid(MIN_PER_HR);
+        // negative minutes are adjusted to positive by `(a).rem_eulicd(b)`, hours still need to be adjusted
+        let h = if (m_raw % MIN_PER_HR).is_negative() {
+            m_raw / MIN_PER_HR - 1
+        } else {
+            m_raw / MIN_PER_HR
+        };
 
-        // adjust - minutes to + minutes
-        if m < 0 {
-            m += MIN_PER_HR;
-            h -= 1;
-        }
         (h, m)
     }
 
     fn rollover_hours(h_raw: Hours) -> Hours {
-        let mut h = h_raw % HRS_PER_DAY;
-        if h < 0 {
-            h = HRS_PER_DAY + h;
-        }
-        h
+        h_raw.rem_euclid(HRS_PER_DAY)
     }
 
     pub fn add_minutes(&mut self, m_raw: Minutes) -> Self {
