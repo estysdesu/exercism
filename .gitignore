@@ -19,3 +19,7 @@ Cargo.lock
 
 # Typescript
 **/node_modules/
+
+# Elm
+**/elm-stuff
+**/repl-temp-*
