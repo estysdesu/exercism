@@ -8,5 +8,4 @@ def personal_best(scores):
 
 def personal_top_three(scores):
     AMT_TO_RETRIEVE = 3
-    scores.sort(reverse=True)
-    return scores[:AMT_TO_RETRIEVE]
+    return sorted(scores, reverse=True)[:AMT_TO_RETRIEVE]
