@@ -20,31 +20,30 @@ pub fn encode(plain: &str) -> String {
     if !plain.is_ascii() {
         panic!("only ascii strings are encodable")
     }
-    // make String variable with max possible capacity needed (but, possibly more than needed b/c punctuation is dropped)
+    // make String variable with max possible capacity needed (but, possibly more than needed b/c special characters and whitespaces)
     let mut encoded = String::with_capacity(plain.len() * (1 + 1 / ENCODE_GROUP_LENGTH));
     // iterate over chars; since only ascii, no surprises (rune conversion not necessary)
+    let mut char_len: u128 = 0;
     for c in plain.to_ascii_lowercase().chars() {
-        // handle if group of 5 exists (push space)
-        if encoded.len() != 0 && encoded.len() % 5 == 0 {
-            encoded.push(' ');
-        }
-
-        if c.is_numeric() {
-            encoded.push(c)
-        }
-        // c.alphabetical()
-        let i = ALPHABET.find(c);
-        // handle non alphabetical chars (punctuation, etc.)
-        if i.is_none() {
+        // handle all ascii not desired
+        if !c.is_ascii_digit() && !c.is_ascii_alphabetic() {
             continue;
         }
-        // push complimentary character
-        encoded.push(
-            ALPHABET
-                .chars()
-                .nth(ALPHABET.len() - i.unwrap() - 1)
-                .unwrap(),
-        );
+        // handle if group of 5 exists (push space)
+        if char_len != 0 && char_len % 5 == 0 {
+            encoded.push(' ');
+        }
+        // handle numbers
+        if c.is_ascii_digit() {
+            encoded.push(c);
+            char_len += 1;
+        }
+        // handle aphabetic
+        if c.is_ascii_alphabetic() {
+            let i = ALPHABET.find(c).unwrap();
+            encoded.push(ALPHABET.chars().nth(ALPHABET.len() - i - 1).unwrap());
+            char_len += 1;
+        }
     }
     encoded.shrink_to_fit();
     encoded
