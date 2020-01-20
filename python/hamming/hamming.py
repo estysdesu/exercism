@@ -1,4 +1,5 @@
 def distance(strand_a: str, strand_b: str) -> int:
+    """The Hamming distance of two equal length strings."""
     if len(strand_a) != len(strand_b):
         raise ValueError("strand_a and strand_b must be equal lengths")
 
