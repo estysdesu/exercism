@@ -16,7 +16,7 @@ class Matrix:
     def row(self, index) -> List[int]:
         """Return the matrix row given the 1-based index."""
         try:
-            return self.matrix[index - 1]
+            return self.matrix[index - 1].copy()
         except IndexError:
             raise IndexError("index is out of bounds of matrix dimensions")
 
