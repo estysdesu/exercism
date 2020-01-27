@@ -2,6 +2,9 @@
 **/.exercism/
 **/users/
 
+# VS Code
+**/.vscode/
+
 # Python
 **/__pycache__/
 **/.pytest_cache/
@@ -23,3 +26,4 @@ Cargo.lock
 # Elm
 **/elm-stuff
 **/repl-temp-*
+
