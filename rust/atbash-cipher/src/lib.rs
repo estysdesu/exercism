@@ -22,7 +22,7 @@ pub fn encode(plain: &str) -> String {
     }
     // make String variable with max possible capacity needed (but, possibly more than needed b/c special characters and whitespaces)
     let mut encoded = String::with_capacity(plain.len() * (1 + 1 / ENCODE_GROUP_LENGTH));
-    // iterate over chars; since only ascii, no surprises (rune conversion not necessary)
+    // iterate over chars; since only ascii, no surprises
     let mut char_len: u128 = 0;
     for c in plain.to_ascii_lowercase().chars() {
         // handle all ascii not desired
@@ -33,7 +33,7 @@ pub fn encode(plain: &str) -> String {
         if char_len != 0 && char_len % 5 == 0 {
             encoded.push(' ');
         }
-        // handle numbers
+        // handle digits
         if c.is_ascii_digit() {
             encoded.push(c);
             char_len += 1;
@@ -51,9 +51,32 @@ pub fn encode(plain: &str) -> String {
 
 /// "Decipher" with the Atbash cipher.
 pub fn decode(cipher: &str) -> String {
+    // panic if invalid input
     if !cipher.is_ascii() {
         panic!("only ascii strings are decodable")
     }
-
-    unimplemented!("Decoding of {:?} in Atbash cipher.", cipher);
+    // make String variable with max possible capacity needed (but, possibly more than needed b/c whitespaces)
+    let mut decoded = String::with_capacity(cipher.len());
+    // iterate over chars
+    for c in cipher.to_ascii_lowercase().chars() {
+        // handle all ascii not desired
+        if !c.is_ascii_whitespace() && !c.is_ascii_digit() && !c.is_ascii_alphabetic() {
+            panic!("invalid encoded string input")
+        }
+        // handle whitespace
+        if c.is_ascii_whitespace() {
+            continue;
+        }
+        // handle digits
+        if c.is_ascii_digit() {
+            decoded.push(c);
+        }
+        // handle alphabetic
+        if c.is_ascii_alphabetic() {
+            let i = ALPHABET.find(c).unwrap();
+            decoded.push(ALPHABET.chars().nth(ALPHABET.len() - i - 1).unwrap());
+        }
+    }
+    decoded.shrink_to_fit();
+    decoded
 }
