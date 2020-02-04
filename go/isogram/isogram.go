@@ -1,19 +1,18 @@
 package isogram
 
-import "unicode"
+import "strings"
 
-// IsIsogram determines if a word is an isogram
+// IsIsogram determines if a has any repeating letters
 func IsIsogram(word string) bool {
-	uniqRunes := make(map[rune]bool, 26) // max capacity is 26
-	for _, r := range word {
-		if r == rune('-') || r == rune(' ') {
+	seen := make(map[rune]bool, 26) // max capacity is 26
+	for _, r := range strings.ToUpper(word) {
+		if r == '-' || r == ' ' {
 			continue
 		}
-		R := unicode.ToUpper(r)
-		if uniqRunes[R] {
+		if seen[r] {
 			return false
 		}
-		uniqRunes[R] = true
+		seen[r] = true
 	}
 	return true
 }
