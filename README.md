@@ -1,2 +1,2 @@
 # exercism
-My [exercism.io](https://exercism.io/profiles/estysdesu) exercise solutions.
+My [exercism.io](https://exercism.io/profiles/estysdesu) exercise
