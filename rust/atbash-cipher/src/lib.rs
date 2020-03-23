@@ -22,7 +22,7 @@ pub fn decode(cipher: &str) -> String {
     cipher
         .to_ascii_lowercase()
         .chars()
-        .filter_map(|c| atbash(c))
+        .filter_map(atbash)
         .collect::<String>()
 }
 
