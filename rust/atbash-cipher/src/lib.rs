@@ -19,23 +19,19 @@ pub fn encode(plain: &str) -> String {
 
 // decode translates encoded cipher strings (resultants from `encode`) into their original `plain` strings
 pub fn decode(cipher: &str) -> String {
-    let decoded = cipher
+    cipher
         .to_ascii_lowercase()
         .chars()
-        .filter(|c| c.is_ascii_alphanumeric())
-        .map(|c| {
-            if c.is_ascii_alphabetic() {
-                atbash(c)
-            } else {
-                c
-            }
-        })
-        .collect::<String>();
-    decoded
+        .filter_map(|c| atbash(c))
+        .collect::<String>()
 }
 
 // atbash is a helper to get the mirrored letter from the alphabet
-fn atbash(c: char) -> char {
-    let i = ALPHABET.find(c).unwrap();
-    ALPHABET.chars().nth(ALPHABET.len() - i - 1).unwrap()
+fn atbash(c: char) -> Option<char> {
+    if c.is_ascii_digit() {
+        Some(c)
+    } else {
+        let i = ALPHABET.find(c)?;
+        ALPHABET.chars().nth(ALPHABET.len() - i - 1)
+    }
 }
