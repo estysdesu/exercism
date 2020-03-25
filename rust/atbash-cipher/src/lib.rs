@@ -3,27 +3,24 @@ const ENCODE_GROUP_LENGTH: usize = 5;
 
 // encode translates `plain` strings according to the atbash cipher
 pub fn encode(plain: &str) -> String {
-    let mut encoded = decode(plain);
+    let atbashed = decode(plain);
 
-    let space_count = if encoded.len() % ENCODE_GROUP_LENGTH != 0 {
-        encoded.len() / ENCODE_GROUP_LENGTH + 1
-    } else {
-        encoded.len() / ENCODE_GROUP_LENGTH
-    };
-    for i in 1..space_count {
-        let ii = (i * 5) + (i - 1);
-        encoded.insert(ii, ' ');
+    let mut encoded = String::with_capacity(atbashed.len() + atbashed.len() / ENCODE_GROUP_LENGTH);
+    for i_c in atbashed.char_indices() {
+        if i_c.0 % 5 == 0 && i_c.0 != 0 {
+            encoded.push(' ');
+            encoded.push(i_c.1);
+        } else {
+            encoded.push(i_c.1);
+        }
     }
+
     encoded
 }
 
 // decode translates encoded cipher strings (resultants from `encode`) into their original `plain` strings
 pub fn decode(cipher: &str) -> String {
-    cipher
-        .to_ascii_lowercase()
-        .chars()
-        .filter_map(atbash)
-        .collect::<String>()
+    cipher.chars().filter_map(atbash).collect::<String>()
 }
 
 // atbash is a helper to get the mirrored letter from the alphabet
@@ -31,7 +28,7 @@ fn atbash(c: char) -> Option<char> {
     if c.is_ascii_digit() {
         Some(c)
     } else {
-        let i = ALPHABET.find(c)?;
+        let i = ALPHABET.find(c.to_ascii_lowercase())?;
         ALPHABET.chars().nth(ALPHABET.len() - i - 1)
     }
 }
