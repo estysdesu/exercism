@@ -6,12 +6,12 @@ pub fn encode(plain: &str) -> String {
     let atbashed = decode(plain);
 
     let mut encoded = String::with_capacity(atbashed.len() + atbashed.len() / ENCODE_GROUP_LENGTH);
-    for i_c in atbashed.char_indices() {
-        if i_c.0 % 5 == 0 && i_c.0 != 0 {
+    for (i, c) in atbashed.char_indices() {
+        if i % 5 == 0 && i != 0 {
             encoded.push(' ');
-            encoded.push(i_c.1);
+            encoded.push(c);
         } else {
-            encoded.push(i_c.1);
+            encoded.push(c);
         }
     }
 
