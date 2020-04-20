@@ -26,3 +26,16 @@ class Matrix:
             return [row[index - 1] for row in self.matrix]
         except IndexError:
             raise IndexError("index is out of bounds of matrix dimensions")
+
+    def transpose(self) -> List[List[int]]:
+        self.matrix_transposed = [
+            [row[i] for row in self.matrix] for i in range(len(self.matrix))
+        ]
+        return self.matrix_transposed.copy()
+
+        # r, c = len(self.matrix), len(self.matrix[0])
+        # self.matrix_transposed = [[0] * c for _ in range(r)]  # r-by-c zeros matrix
+        # for rr in range(r):
+        #     for cc in range(c):
+        #         self.matrix_transposed[cc][rr] = self.matrix[rr][cc]
+        # return self.matrix_transposed.copy()
